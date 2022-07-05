@@ -2,15 +2,16 @@ import Env from '@ioc:Adonis/Core/Env'
 import { pubsubConfig } from 'adonis-pubsub/build/config'
 
 export default pubsubConfig({
-  pubsub: '{{primaryPubsub}}',
+  pubsub: '{{primaryDriver}}',
   pubsubs: {
     {{#mqtt}}
     mqtt: {
+      driver: 'mqtt',
       host: Env.get('MQTT_HOST'),
       port: Env.get('MQTT_PASSWORD'),
       username: Env.get('MQTT_USERNAME', ''),
       password: Env.get('MQTT_PASSWORD', ''),
-    }
+    },
     {{/mqtt}}
-  }
+  },
 })
