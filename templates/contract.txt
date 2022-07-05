@@ -1,0 +1,6 @@
+import { InferPubSubFromConfig } from 'adonis-pubsub/build/config'
+import pubsubConfig from '../config/pubsub'
+
+declare module '@ioc:Romch007/PubSub' {
+  interface PubSubDriversList extends InferPubSubFromConfig<typeof pubsubConfig> {}
+}

@@ -23,7 +23,8 @@
     "commit": "git-cz",
     "release": "np --message=\"chore(release): %s\"",
     "version": "npm run build",
-    "sync-labels": "github-label-sync --labels ./node_modules/@adonisjs/mrm-preset/gh-labels.json romch007/adonis-pubsub"
+    "sync-labels": "github-label-sync --labels ./node_modules/@adonisjs/mrm-preset/gh-labels.json romch007/adonis-pubsub",
+    "prepare": "husky install"
   },
   "typings": "./build/adonis-typings/index.d.ts",
   "keywords": [
@@ -40,6 +41,7 @@
     "@adonisjs/require-ts": "^2.0.12",
     "@adonisjs/sink": "^5.3.2",
     "@types/node": "^18.0.0",
+    "async-mqtt": "^2.6.2",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "del-cli": "^4.0.1",
@@ -60,6 +62,10 @@
   "peerDependencies": {
     "@adonisjs/application": "^5.2.5",
     "@adonisjs/core": "^5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romch007/adonis-pubsub.git"
   },
   "mrmConfig": {
     "core": false,

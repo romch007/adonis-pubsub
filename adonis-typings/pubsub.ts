@@ -1,25 +1,26 @@
-import { ManagerContract } from '@poppinss/manager'
-import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-
 declare module '@ioc:Romch007/PubSub' {
+  import { ManagerContract } from '@poppinss/manager'
+  import { ApplicationContract } from '@ioc:Adonis/Core/Application'
+
   export interface PubSubDriverContract {
-    name: string
-    publish(message: Buffer): Promise<void>
+    publish(topic: string, message: Buffer): Promise<void>
     subscribe(topic: string): void
   }
 
-  export type MqttDriverConfig = {
+  export type MqttConfig = {
     host: string
     port: string
     username?: string
     password?: string
   }
 
-  export interface MqttDriverContract extends PubSubDriverContract {}
+  export interface MqttDriverContract extends PubSubDriverContract {
+    name: 'mqtt'
+  }
 
   export interface PubSubDrivers {
     mqtt: {
-      config: MqttDriverConfig
+      config: MqttConfig
       implementation: MqttDriverContract
     }
   }
@@ -36,7 +37,7 @@ declare module '@ioc:Romch007/PubSub' {
         ApplicationContract,
         PubSubDriverContract,
         PubSubDriverContract,
-        { [P in keyof PubSubDriversList]: PubSubDrivers[P]['implementation'] }
+        { [P in keyof PubSubDriversList]: PubSubDriversList[P]['implementation'] }
       >,
       Omit<PubSubDriverContract, 'name'> {}
 

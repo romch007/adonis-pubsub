@@ -6,7 +6,5 @@
     "emitDecoratorMetadata": true,
     "types": ["@types/node", "@adonisjs/core"]
   },
-  "files": [
-    "./node_modules/@adonisjs/application/build/adonis-typings/index.d.ts"
-  ]
+  "files": ["./node_modules/@adonisjs/application/build/adonis-typings/index.d.ts"]
 }
