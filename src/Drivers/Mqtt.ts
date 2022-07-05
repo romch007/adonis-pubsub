@@ -2,15 +2,19 @@
 
 import MQTT, { AsyncMqttClient } from 'async-mqtt'
 import { MqttConfig, MqttDriverContract } from '@ioc:Romch007/PubSub'
+import { EmitterContract } from '@ioc:Adonis/Core/Event'
 
 export class MqttDriver implements MqttDriverContract {
   public name: 'mqtt' = 'mqtt'
   private client: AsyncMqttClient
 
-  constructor(config: MqttConfig) {
+  constructor(config: MqttConfig, emitter: EmitterContract) {
     this.client = MQTT.connect({
       ...config,
       protocol: 'mqtt',
+    })
+    this.client.on('message', (topic, message, _) => {
+      emitter.emit('pubsub:message', { topic, message })
     })
   }
 

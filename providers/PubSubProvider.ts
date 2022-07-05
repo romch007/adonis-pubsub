@@ -12,9 +12,10 @@ export default class PubSubProvider {
    */
   public register() {
     this.app.container.singleton('Romch007/PubSub', () => {
-      const config = this.app.container.resolveBinding('Adonis/Core/Config').get('pubsub', {})
-      const { PubSubManager } = require('../src/PubSub/PubSubManager')
-      return new PubSubManager(this.app, config)
+      const { PubSubManager } = require('../src/PubSubManager')
+      const Config = this.app.container.resolveBinding('Adonis/Core/Config')
+      const Event = this.app.container.resolveBinding('Adonis/Core/Event')
+      return new PubSubManager(this.app, Event, Config.get('pubsub'))
     })
   }
 

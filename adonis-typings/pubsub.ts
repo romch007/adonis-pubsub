@@ -18,6 +18,10 @@ declare module '@ioc:Romch007/PubSub' {
     name: 'mqtt'
   }
 
+  export interface FakeDriverContract extends PubSubDriverContract {
+    name: 'fake'
+  }
+
   export interface PubSubDrivers {
     mqtt: {
       config: MqttConfig
@@ -29,8 +33,27 @@ declare module '@ioc:Romch007/PubSub' {
 
   export type PubSubConfig = {
     pubsub: keyof PubSubDriversList
-    pubsubs: { [P in keyof PubSubDriversList]: PubSubDrivers[P]['config'] }
+    pubsubs: { [P in keyof PubSubDriversList]: PubSubDriversList[P]['config'] }
   }
+
+  export interface FakePubSubContract {
+    fakes: Map<keyof PubSubDriversList, FakeDriverContract>
+
+    isFaked(driver: keyof PubSubDriversList): boolean
+
+    use(driver: keyof PubSubDriversList): FakeDriverContract
+
+    restore(driver: keyof PubSubDriversList): void
+  }
+
+  /**
+   * Shape of the fake implementation callback
+   */
+  export type FakeImplementationCallback = (
+    manager: PubSubManagerContract,
+    mappingName: keyof PubSubDriversList,
+    config: any
+  ) => FakeDriverContract
 
   export interface PubSubManagerContract
     extends ManagerContract<

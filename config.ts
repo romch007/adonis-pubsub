@@ -1,10 +1,10 @@
-import { PubSubDriversList } from '@ioc:Romch007/PubSub'
+import { PubSubDrivers } from '@ioc:Romch007/PubSub'
 
 type PubSubConfig = {
   pubsubs: {
     [name: string]: {
-      [K in keyof PubSubDriversList]: PubSubDriversList[K]['config'] & { driver: K }
-    }[keyof PubSubDriversList]
+      [K in keyof PubSubDrivers]: PubSubDrivers[K]['config'] & { driver: K }
+    }[keyof PubSubDrivers]
   }
 }
 
@@ -15,5 +15,5 @@ export function pubsubConfig<T extends PubSubConfig & { pubsub: keyof T['pubsubs
 }
 
 export type InferPubSubFromConfig<T extends PubSubConfig> = {
-  [K in keyof T['pubsubs']]: PubSubDriversList[T['pubsubs'][K]['driver']]
+  [K in keyof T['pubsubs']]: PubSubDrivers[T['pubsubs'][K]['driver']]
 }
