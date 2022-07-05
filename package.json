@@ -2,7 +2,14 @@
   "name": "adonis-pubsub",
   "version": "1.0.0",
   "description": "PubSub for adonis",
-  "main": "index.js",
+  "main": "build/providers/PubSubProvider.js",
+  "files": [
+    "build/adonis-typings",
+    "build/providers",
+    "build/src",
+    "build/config.d.ts",
+    "build/config.js"
+  ],
   "scripts": {
     "pretest": "npm run lint",
     "test": "node -r @adonisjs/require-ts/build/register bin/test.ts",
@@ -18,6 +25,7 @@
     "version": "npm run build",
     "sync-labels": "github-label-sync --labels ./node_modules/@adonisjs/mrm-preset/gh-labels.json romch007/adonis-pubsub"
   },
+  "typings": "./build/adonis-typings/index.d.ts",
   "keywords": [
     "adonis",
     "pubsub",
@@ -26,8 +34,11 @@
   "author": "Romain Chardiny <romain.chardiny@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@adonisjs/application": "^5.2.5",
+    "@adonisjs/core": "^5.1.0",
     "@adonisjs/mrm-preset": "^5.0.3",
     "@adonisjs/require-ts": "^2.0.12",
+    "@adonisjs/sink": "^5.3.2",
     "@types/node": "^18.0.0",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
@@ -43,6 +54,13 @@
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   },
+  "dependencies": {
+    "@poppinss/manager": "^5.0.2"
+  },
+  "peerDependencies": {
+    "@adonisjs/application": "^5.2.5",
+    "@adonisjs/core": "^5.1.0"
+  },
   "mrmConfig": {
     "core": false,
     "license": "MIT",
@@ -53,11 +71,6 @@
     "probotApps": [],
     "runGhActionsOnWindows": true
   },
-  "files": [
-    "build/src",
-    "build/index.d.ts",
-    "build/index.js"
-  ],
   "eslintConfig": {
     "extends": [
       "plugin:adonis/typescriptPackage",
