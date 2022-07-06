@@ -17,8 +17,14 @@ export default pubsubConfig({
     google: {
       driver: 'google',
       projectId: Env.get('GOOGLE_PROJECT_ID'),
-      subscriptionFormat: (topic: string) => `${topic}-sub`
+      subscriptionFormat: (topic: string) => `${topic}-sub`,
     },
     {{/google}}
+    {{#redis}}
+    redis: {
+      driver: 'redis',
+      redisConnection: 'local',
+    },
+    {{/redis}}
   },
 })

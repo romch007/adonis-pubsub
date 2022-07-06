@@ -8,6 +8,7 @@ import * as sinkStatic from '@adonisjs/sink'
 const DRIVER_PROMPTS = [
   { name: 'mqtt' as const, message: 'MQTT' },
   { name: 'google' as const, message: 'Google PubSub' },
+  { name: 'redis' as const, message: 'Redis' },
 ]
 
 /**
@@ -23,6 +24,7 @@ const DRIVER_ENV_VALUES = {
   google: {
     GOOGLE_PROJECT_ID: '<project_id>',
   },
+  redis: {},
 }
 
 /**
@@ -81,6 +83,7 @@ export default async function instructions(
       primaryDriver: pubsubDrivers[0],
       mqtt: pubsubDrivers.includes('mqtt'),
       google: pubsubDrivers.includes('google'),
+      redis: pubsubDrivers.includes('redis'),
     })
     .commit()
   const configDir = app.directoriesMap.get('config') || 'config'
@@ -99,7 +102,8 @@ export default async function instructions(
   pubsubContract
     .apply({
       mqtt: pubsubDrivers.includes('mqtt'),
-      goolgle: pubsubDrivers.includes('google'),
+      google: pubsubDrivers.includes('google'),
+      redis: pubsubDrivers.includes('redis'),
     })
     .commit()
   sink.logger.action('create').succeeded('contracts/pubsub.ts')
@@ -112,7 +116,7 @@ export default async function instructions(
   /**
    * Unset all existing env values as should keep the .env file clean
    */
-  Object.keys(getEnvValues(['mqtt', 'google'])).forEach((key) => {
+  Object.keys(getEnvValues(['mqtt', 'google', 'redis'])).forEach((key) => {
     env.unset(key)
   })
 

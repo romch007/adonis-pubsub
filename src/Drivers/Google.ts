@@ -1,3 +1,5 @@
+/// <reference path="../../adonis-typings/pubsub.ts" />
+
 import { GooglePubSubConfig, GooglePubSubDriverContract } from '@ioc:Romch007/PubSub'
 import * as google from '@google-cloud/pubsub'
 import { EmitterContract } from '@ioc:Adonis/Core/Event'

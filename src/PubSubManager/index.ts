@@ -10,8 +10,10 @@ import {
   PubSubConfig,
   FakeImplementationCallback,
   GooglePubSubConfig,
+  RedisConfig,
 } from '@ioc:Romch007/PubSub'
 import { FakePubSub } from '../Fake'
+import { Exception } from '@poppinss/utils'
 
 export class PubSubManager
   extends Manager<
@@ -61,6 +63,16 @@ export class PubSubManager
   protected createGoogle(_: string, config: GooglePubSubConfig) {
     const { GooglePubSubDriver } = require('../Drivers/Google')
     return new GooglePubSubDriver(config, this.emitter)
+  }
+
+  protected createRedis(_: string, config: RedisConfig) {
+    if (!this.application.container.hasBinding('Adonis/Addons/Redis')) {
+      throw new Exception('"@adonisjs/redis" is required to use the "redis" pubsub provider')
+    }
+
+    const Redis = this.application.container.use('Adonis/Addons/Redis')
+    const { RedisDriver } = require('../Drivers/Redis')
+    return new RedisDriver(config, this.emitter, Redis)
   }
 
   public fake(drivers?: keyof PubSubDriversList | keyof PubSubDriversList[]) {

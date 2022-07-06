@@ -55,6 +55,10 @@ declare module '@ioc:Romch007/PubSub' {
       config: GooglePubSubConfig
       implementation: GooglePubSubDriverContract
     }
+    redis: {
+      config: RedisConfig
+      implementation: RedisDriverContract
+    }
   }
 
   /**
@@ -104,7 +108,7 @@ declare module '@ioc:Romch007/PubSub' {
   */
 
   /**
-   * MQTT driver config
+   * Google PubSub driver config
    */
   export type GooglePubSubConfig = {
     projectId: string
@@ -112,10 +116,30 @@ declare module '@ioc:Romch007/PubSub' {
   }
 
   /**
-   * Shape of the mqtt driver
+   * Shape of the Google PubSub driver
    */
   export interface GooglePubSubDriverContract extends PubSubDriverContract {
     name: 'google'
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Google PubSub driver
+  |--------------------------------------------------------------------------
+  */
+
+  /**
+   * Google PubSub driver config
+   */
+  export type RedisConfig = {
+    redisConnection: string
+  }
+
+  /**
+   * Shape of the Google PubSub driver
+   */
+  export interface RedisDriverContract extends PubSubDriverContract {
+    name: 'redis'
   }
 
   /*
