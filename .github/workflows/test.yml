@@ -26,7 +26,7 @@ jobs:
         uses: namoshek/mosquitto-github-action@v1
         with:
           version: ${{ matrix.mosquitto-version }}
-          config: /mosquitto-no-auth.conf
+          config: ${{ github.workspace }}/mosquitto.conf
       - name: Install
         run: npm install
       - name: Run tests
