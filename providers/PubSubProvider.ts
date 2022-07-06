@@ -14,8 +14,7 @@ export default class PubSubProvider {
     this.app.container.singleton('Romch007/PubSub', () => {
       const { PubSubManager } = require('../src/PubSubManager')
       const Config = this.app.container.resolveBinding('Adonis/Core/Config')
-      const Event = this.app.container.resolveBinding('Adonis/Core/Event')
-      return new PubSubManager(this.app, Event, Config.get('pubsub'))
+      return new PubSubManager(this.app, Config.get('pubsub'))
     })
   }
 

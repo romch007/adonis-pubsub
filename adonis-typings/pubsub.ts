@@ -9,7 +9,7 @@ declare module '@ioc:Romch007/PubSub' {
 
   export type MqttConfig = {
     host: string
-    port: string
+    port: number
     username?: string
     password?: string
   }
@@ -37,12 +37,8 @@ declare module '@ioc:Romch007/PubSub' {
   }
 
   export interface FakePubSubContract {
-    fakes: Map<keyof PubSubDriversList, FakeDriverContract>
-
     isFaked(driver: keyof PubSubDriversList): boolean
-
     use(driver: keyof PubSubDriversList): FakeDriverContract
-
     restore(driver: keyof PubSubDriversList): void
   }
 

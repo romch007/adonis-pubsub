@@ -1,26 +1,37 @@
 import { join } from 'path'
 import { Filesystem } from '@poppinss/dev-utils'
-import { Application } from '@adonisjs/application'
+import { Application } from '@adonisjs/core/build/standalone'
 
-export const fs = new Filesystem(join(__dirname, '__app'))
+export const fs = new Filesystem(join(__dirname, 'app'))
 
-export async function setupApp(providers?: string[]) {
-  const app = new Application(fs.basePath, 'web', {
-    providers: ['@adonisjs/encryption', '@adonisjs/http-server'].concat(providers ?? []),
-  })
+export async function setup(environment: 'web' | 'repl' = 'web', mailConfig?: any) {
   await fs.add('.env', '')
   await fs.add(
     'config/app.ts',
     `
-    export const appKey = 'verylongandrandom32charsecretkey'
-    export const http = {
-      trustProxy: () => true,
-      cookie: {},
-    }
-  `
+		export const appKey = 'averylong32charsrandomsecretkey',
+		export const http = {
+			cookie: {},
+			trustProxy: () => true,
+		}
+	`
   )
+
+  await fs.add(
+    'config/pubsub.ts',
+    `
+		const mailConfig = ${JSON.stringify(mailConfig || {}, null, 2)}
+		export default mailConfig
+	`
+  )
+
+  const app = new Application(fs.basePath, environment, {
+    providers: ['@adonisjs/core', '../../providers/PubSubProvider'],
+  })
 
   await app.setup()
   await app.registerProviders()
   await app.bootProviders()
+
+  return app
 }
