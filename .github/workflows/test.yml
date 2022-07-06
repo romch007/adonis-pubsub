@@ -27,7 +27,6 @@ jobs:
         with:
           version: ${{ matrix.mosquitto-version }}
           config: /mosquitto-no-auth.conf
-      - name: Start
       - name: Install
         run: npm install
       - name: Run tests
