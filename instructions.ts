@@ -5,7 +5,10 @@ import * as sinkStatic from '@adonisjs/sink'
 /**
  * Prompt choices for the mail driver selection
  */
-const DRIVER_PROMPTS = [{ name: 'mqtt' as const, message: 'MQTT' }]
+const DRIVER_PROMPTS = [
+  { name: 'mqtt' as const, message: 'MQTT' },
+  { name: 'google' as const, message: 'Google PubSub' },
+]
 
 /**
  * Environment variables for available drivers
@@ -16,6 +19,9 @@ const DRIVER_ENV_VALUES = {
     MQTT_PORT: '1883',
     MQTT_USERNAME: '<username>',
     MQTT_PASSWORD: '<password>',
+  },
+  google: {
+    GOOGLE_PROJECT_ID: '<project_id>',
   },
 }
 
@@ -74,6 +80,7 @@ export default async function instructions(
     .apply({
       primaryDriver: pubsubDrivers[0],
       mqtt: pubsubDrivers.includes('mqtt'),
+      google: pubsubDrivers.includes('google'),
     })
     .commit()
   const configDir = app.directoriesMap.get('config') || 'config'
@@ -92,6 +99,7 @@ export default async function instructions(
   pubsubContract
     .apply({
       mqtt: pubsubDrivers.includes('mqtt'),
+      goolgle: pubsubDrivers.includes('google'),
     })
     .commit()
   sink.logger.action('create').succeeded('contracts/pubsub.ts')
@@ -104,7 +112,7 @@ export default async function instructions(
   /**
    * Unset all existing env values as should keep the .env file clean
    */
-  Object.keys(getEnvValues(['mqtt'])).forEach((key) => {
+  Object.keys(getEnvValues(['mqtt', 'google'])).forEach((key) => {
     env.unset(key)
   })
 

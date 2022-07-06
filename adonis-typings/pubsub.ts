@@ -51,6 +51,10 @@ declare module '@ioc:Romch007/PubSub' {
       config: MqttConfig
       implementation: MqttDriverContract
     }
+    google: {
+      config: GooglePubSubConfig
+      implementation: GooglePubSubDriverContract
+    }
   }
 
   /**
@@ -95,12 +99,34 @@ declare module '@ioc:Romch007/PubSub' {
 
   /*
   |--------------------------------------------------------------------------
+  | Google PubSub driver
+  |--------------------------------------------------------------------------
+  */
+
+  /**
+   * MQTT driver config
+   */
+  export type GooglePubSubConfig = {
+    projectId: string
+    subscriptionFormat: (topic: string) => string
+  }
+
+  /**
+   * Shape of the mqtt driver
+   */
+  export interface GooglePubSubDriverContract extends PubSubDriverContract {
+    name: 'google'
+  }
+
+  /*
+  |--------------------------------------------------------------------------
   | Fake driver
   |--------------------------------------------------------------------------
   */
 
   export interface FakeDriverContract extends PubSubDriverContract {
     name: 'fake'
+    driver: keyof PubSubDriversList
   }
 
   export interface FakePubSubContract {
@@ -131,7 +157,34 @@ declare module '@ioc:Romch007/PubSub' {
         PubSubDriverContract,
         { [P in keyof PubSubDriversList]: PubSubDriversList[P]['implementation'] }
       >,
-      Omit<PubSubDriverContract, 'name'> {}
+      Omit<PubSubDriverContract, 'name'> {
+    /**
+     * Access to the fake instances created so far.
+     * @deprecated
+     */
+    fakes: Map<keyof PubSubDriversList, FakeDriverContract>
+
+    /**
+     * Fake the default or a named disk
+     */
+    fake(driver?: keyof PubSubDriversList | keyof PubSubDriversList[]): FakePubSubContract
+
+    /**
+     * Restore fake for the default or a named disk
+     */
+    restore(driver?: keyof PubSubDriversList | keyof PubSubDriversList[]): void
+
+    /**
+     * Restore all fakes
+     */
+    restoreAll(): void
+
+    /**
+     * Define a custom fake implementation. An instance of it
+     * will be created anytime a fake is created
+     */
+    setFakeImplementation(callback: FakeImplementationCallback): void
+  }
 
   const PubSub: PubSubManagerContract
   export default PubSub

@@ -13,5 +13,12 @@ export default pubsubConfig({
       password: Env.get('MQTT_PASSWORD', ''),
     },
     {{/mqtt}}
+    {{#google}}
+    google: {
+      driver: 'google',
+      projectId: Env.get('GOOGLE_PROJECT_ID'),
+      subscriptionFormat: (topic: string) => `${topic}-sub`
+    },
+    {{/google}}
   },
 })

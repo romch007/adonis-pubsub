@@ -10,3 +10,9 @@ MQTT_PORT: Env.schema.number(),
 MQTT_USERNAME: Env.schema.string(),
 MQTT_PASSWORD: Env.schema.string(),
 ```
+
+### Variables for the Google PubSub driver
+
+```ts
+GOOGLE_PROJECT_ID: Env.schema.string(),
+```
