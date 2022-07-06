@@ -3,30 +3,8 @@ on:
   - push
   - pull_request
 jobs:
-  linux:
+  testing:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version:
-          - 16.13.1
-          - 17.x
-        redis-version: [7]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Start Redis v${{ matrix.redis-version }}
-        uses: superchargejs/redis-github-action@1.1.0
-        with:
-          redis-version: ${{ matrix.redis-version }}
-      - name: Install
-        run: npm install
-      - name: Run tests
-        run: npm test
-  windows:
-    runs-on: windows-latest
     strategy:
       matrix:
         node-version:
