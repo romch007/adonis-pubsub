@@ -3,7 +3,7 @@ on:
   - push
   - pull_request
 jobs:
-  testing:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -11,6 +11,7 @@ jobs:
           - 16.13.1
           - 17.x
         redis-version: [7]
+        mosquitto-version: [2]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -21,6 +22,12 @@ jobs:
         uses: superchargejs/redis-github-action@1.1.0
         with:
           redis-version: ${{ matrix.redis-version }}
+      - name: Start Mosquitto v${{ matrix.mosquitto-version }}
+        uses: namoshek/mosquitto-github-action@v1
+        with:
+          version: ${{ matrix.mosquitto-version }}
+          config: /mosquitto-no-auth.conf
+      - name: Start
       - name: Install
         run: npm install
       - name: Run tests
