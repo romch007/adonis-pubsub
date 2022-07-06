@@ -4,7 +4,7 @@ import { Application } from '@adonisjs/core/build/standalone'
 
 export const fs = new Filesystem(join(__dirname, 'app'))
 
-export async function setup(environment: 'web' | 'repl' = 'web', mailConfig?: any) {
+export async function setup(environment: 'web' | 'repl' = 'web', pubsubConfig?: any) {
   await fs.add('.env', '')
   await fs.add(
     'config/app.ts',
@@ -20,8 +20,8 @@ export async function setup(environment: 'web' | 'repl' = 'web', mailConfig?: an
   await fs.add(
     'config/pubsub.ts',
     `
-		const mailConfig = ${JSON.stringify(mailConfig || {}, null, 2)}
-		export default mailConfig
+		const pubsubConfig = ${JSON.stringify(pubsubConfig || {}, null, 2)}
+		export default pubsubConfig
 	`
   )
 

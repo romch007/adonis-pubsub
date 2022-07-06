@@ -3,7 +3,7 @@ import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import * as sinkStatic from '@adonisjs/sink'
 
 /**
- * Prompt choices for the mail driver selection
+ * Prompt choices for the pubsub driver selection
  */
 const DRIVER_PROMPTS = [
   { name: 'mqtt' as const, message: 'MQTT' },
@@ -28,7 +28,7 @@ const DRIVER_ENV_VALUES = {
 }
 
 /**
- * Prompts user to select one or more mail drivers they are planning
+ * Prompts user to select one or more pubsub drivers they are planning
  * to use.
  */
 function getPubsubDrivers(sink: typeof sinkStatic) {
@@ -38,7 +38,7 @@ function getPubsubDrivers(sink: typeof sinkStatic) {
       validate(choices) {
         return choices && choices.length
           ? true
-          : 'Select atleast one mail driver. You can always change it later'
+          : 'Select atleast one pubsub driver. You can always change it later'
       },
     })
 }
@@ -67,12 +67,12 @@ export default async function instructions(
   sink: typeof sinkStatic
 ) {
   /**
-   * Get mail drivers
+   * Get pubsub drivers
    */
   const pubsubDrivers = await getPubsubDrivers(sink)
 
   /**
-   * Create the mail config file
+   * Create the pubsub config file
    */
   const configPath = app.configPath('pubsub.ts')
   const pubsubConfig = new sink.files.MustacheFile(projectRoot, configPath, getStub('config.txt'))
@@ -90,7 +90,7 @@ export default async function instructions(
   sink.logger.action('create').succeeded(`${configDir}/pubsub.ts`)
 
   /**
-   * Create the mail contracts file
+   * Create the pubsub contracts file
    */
   const contractsPath = app.makePath('contracts/pubsub.ts')
   const pubsubContract = new sink.files.MustacheFile(

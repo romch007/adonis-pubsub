@@ -1,7 +1,7 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
 /**
- * Mail provider to register mail specific bindings
+ * Pubsub provider to register pubsub specific bindings
  */
 export default class PubSubProvider {
   constructor(protected app: ApplicationContract) {}

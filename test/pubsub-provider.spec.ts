@@ -2,7 +2,7 @@ import { test } from '@japa/runner'
 import { PubSubManager } from '../src/PubSubManager'
 import { fs, setup } from '../test-helpers'
 
-test.group('Mail Provider', (group) => {
+test.group('Pubsub Provider', (group) => {
   group.each.teardown(async () => {
     await fs.cleanup()
   })
