@@ -1,6 +1,6 @@
 {
   "name": "adonis-pubsub",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "PubSub for adonis",
   "main": "build/providers/PubSubProvider.js",
   "files": [
