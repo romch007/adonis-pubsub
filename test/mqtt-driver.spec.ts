@@ -5,20 +5,22 @@ import { join } from 'path'
 import { MqttDriver } from '../src/Drivers/Mqtt'
 import { fs, setup, wait } from '../test-helpers'
 
+let mqtt: MqttDriver
+
 test.group('Mqtt driver', (group) => {
   group.setup(() => {
     dotenv.config({ path: join(__dirname, '..', '.env') })
   })
 
   group.each.teardown(async () => {
+    await mqtt.close()
     await fs.cleanup()
   })
 
-  test('publish using mqtt driver', async ({ assert }) => {
-    assert.plan(1)
+  test('publish and subscribe using mqtt driver', async ({ assert }, done) => {
     const app = await setup()
     const emitter = app.container.resolveBinding('Adonis/Core/Event')
-    const mqtt = new MqttDriver(
+    mqtt = new MqttDriver(
       {
         host: process.env.MQTT_HOST!,
         port: Number(process.env.MQTT_PORT!),
@@ -33,11 +35,12 @@ test.group('Mqtt driver', (group) => {
     mqtt.subscribe(topic)
     emitter.on('pubsub:message', ({ topic: receivedTopic, message: receivedMessage }) => {
       assert.equal(topic, receivedTopic)
-      assert.equal(message, receivedMessage)
+      assert.isTrue(message.equals(receivedMessage))
+      done()
     })
 
     await wait(200)
 
     await mqtt.publish(topic, message)
-  }).skip()
+  }).waitForDone()
 })
