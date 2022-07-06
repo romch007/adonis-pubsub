@@ -9,6 +9,7 @@ import {
   MqttConfig,
   PubSubConfig,
   FakeImplementationCallback,
+  GooglePubSubConfig,
 } from '@ioc:Romch007/PubSub'
 import { FakePubSub } from '../Fake'
 
@@ -55,6 +56,11 @@ export class PubSubManager
   protected createMqtt(_: string, config: MqttConfig) {
     const { MqttDriver } = require('../Drivers/Mqtt')
     return new MqttDriver(config, this.emitter)
+  }
+
+  protected createGoogle(_: string, config: GooglePubSubConfig) {
+    const { GooglePubSubDriver } = require('../Drivers/Google')
+    return new GooglePubSubDriver(config, this.emitter)
   }
 
   public fake(drivers?: keyof PubSubDriversList | keyof PubSubDriversList[]) {

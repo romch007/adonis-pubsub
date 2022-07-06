@@ -11,6 +11,7 @@ export class GooglePubSubDriver implements GooglePubSubDriverContract {
   constructor(private config: GooglePubSubConfig, private emitter: EmitterContract) {
     this.client = new google.PubSub(config)
     this.topicMappings = new Map()
+    this.subscriptionMappings = new Map()
   }
 
   public async publish(topic: string, message: Buffer): Promise<void> {
@@ -23,7 +24,7 @@ export class GooglePubSubDriver implements GooglePubSubDriverContract {
     this.mapSubscription(topic)
     const googleSubscription = this.subscriptionMappings.get(topic)!
     googleSubscription.on('message', (message) => {
-      this.emitter.emit('pubsub:message', { topic, message })
+      this.emitter.emit('pubsub:message', { topic, message: message.data })
     })
   }
 
