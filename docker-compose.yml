@@ -5,3 +5,8 @@ services:
     command: ['mosquitto', '-c', '/mosquitto-no-auth.conf']
     ports:
       - 1883:1883
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379

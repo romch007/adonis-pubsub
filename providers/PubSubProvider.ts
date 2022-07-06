@@ -32,5 +32,7 @@ export default class PubSubProvider {
   //   })
   // }
 
-  public async shutdown() {}
+  public async shutdown() {
+    await this.app.container.resolveBinding('Romch007/PubSub').closeAll()
+  }
 }

@@ -25,4 +25,8 @@ export class MqttDriver implements MqttDriverContract {
   public subscribe(topic: string): void {
     this.client.subscribe(topic)
   }
+
+  public close(): void | Promise<void> {
+    return this.client.end()
+  }
 }

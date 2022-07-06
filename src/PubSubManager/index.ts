@@ -126,4 +126,15 @@ export class PubSubManager
   public subscribe(topic: string): void {
     return this.use().subscribe(topic)
   }
+
+  public async close(name?: keyof PubSubDriversList): Promise<void> {
+    const driver = name ? this.use(name) : this.use()
+    await driver.close()
+  }
+
+  public async closeAll(): Promise<void> {
+    await Promise.all(
+      Array.from(this['mappingsCache'].keys()).map((name: string) => this.close(name as any))
+    )
+  }
 }

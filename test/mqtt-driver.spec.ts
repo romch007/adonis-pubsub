@@ -3,9 +3,9 @@ import dotenv from 'dotenv'
 import { join } from 'path'
 
 import { MqttDriver } from '../src/Drivers/Mqtt'
-import { fs, setup } from '../test-helpers'
+import { fs, setup, wait } from '../test-helpers'
 
-test.group('Mqtt drier', (group) => {
+test.group('Mqtt driver', (group) => {
   group.setup(() => {
     dotenv.config({ path: join(__dirname, '..', '.env') })
   })
@@ -31,10 +31,13 @@ test.group('Mqtt drier', (group) => {
     const message = Buffer.from('fazefazef')
 
     mqtt.subscribe(topic)
-    await mqtt.publish(topic, message)
     emitter.on('pubsub:message', ({ topic: receivedTopic, message: receivedMessage }) => {
       assert.equal(topic, receivedTopic)
       assert.equal(message, receivedMessage)
     })
+
+    await wait(200)
+
+    await mqtt.publish(topic, message)
   }).skip()
 })

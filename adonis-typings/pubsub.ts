@@ -15,6 +15,7 @@ declare module '@ioc:Romch007/PubSub' {
   export interface PubSubDriverContract {
     publish(topic: string, message: Buffer): Promise<void>
     subscribe(topic: string): void
+    close(): void | Promise<void>
   }
 
   /*
@@ -208,6 +209,16 @@ declare module '@ioc:Romch007/PubSub' {
      * will be created anytime a fake is created
      */
     setFakeImplementation(callback: FakeImplementationCallback): void
+
+    /**
+     * Close driver
+     */
+    close(name?: string): Promise<void>
+
+    /**
+     * Close all drivers
+     */
+    closeAll(): Promise<void>
   }
 
   const PubSub: PubSubManagerContract

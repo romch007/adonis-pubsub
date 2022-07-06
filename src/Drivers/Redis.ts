@@ -69,4 +69,8 @@ export class RedisDriver implements RedisDriverContract {
       this.emitter.emit('pubsub:message', { topic, message: Buffer.from(message) })
     })
   }
+
+  public close(): void | Promise<void> {
+    return this.getRedisConnection().disconnect()
+  }
 }

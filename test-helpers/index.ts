@@ -18,6 +18,19 @@ export async function setup(environment: 'web' | 'repl' = 'web', pubsubConfig?: 
   )
 
   await fs.add(
+    'config/redis.ts',
+    `
+    const redisConfig = {
+      connection: 'local',
+      connections: {
+        local: {}
+      }
+    }
+    export default redisConfig
+  `
+  )
+
+  await fs.add(
     'config/pubsub.ts',
     `
 		const pubsubConfig = ${JSON.stringify(pubsubConfig || {}, null, 2)}
@@ -26,7 +39,7 @@ export async function setup(environment: 'web' | 'repl' = 'web', pubsubConfig?: 
   )
 
   const app = new Application(fs.basePath, environment, {
-    providers: ['@adonisjs/core', '../../providers/PubSubProvider'],
+    providers: ['@adonisjs/core', '@adonisjs/redis', '../../providers/PubSubProvider'],
   })
 
   await app.setup()
@@ -34,4 +47,8 @@ export async function setup(environment: 'web' | 'repl' = 'web', pubsubConfig?: 
   await app.bootProviders()
 
   return app
+}
+
+export function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

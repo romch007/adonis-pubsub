@@ -22,4 +22,8 @@ export class FakeDriver implements FakeDriverContract {
   public subscribe(topic: string): void {
     this.subscribedTopics.push(topic)
   }
+
+  public close(): void | Promise<void> {
+    this.subscribedTopics = []
+  }
 }

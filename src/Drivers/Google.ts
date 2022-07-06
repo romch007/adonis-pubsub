@@ -45,4 +45,8 @@ export class GooglePubSubDriver implements GooglePubSubDriverContract {
       this.subscriptionMappings.set(topic, googleSubscription)
     }
   }
+
+  public close(): void | Promise<void> {
+    return this.client.close()
+  }
 }
