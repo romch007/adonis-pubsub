@@ -41,9 +41,9 @@ export class RedisDriver implements RedisDriverContract {
      */
     if (!this.config.redisConnection) {
       throw new Exception(
-        'Missing "redisConnection" property for auth redis provider inside "config/pubsub" file',
+        'Missing "redisConnection" property for pubsub redis provider inside "config/pubsub" file',
         500,
-        'E_INVALID_AUTH_REDIS_CONFIG'
+        'E_INVALID_PUBSUB_REDIS_CONFIG'
       )
     }
 
