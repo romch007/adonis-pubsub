@@ -8,7 +8,7 @@ export default pubsubConfig({
     mqtt: {
       driver: 'mqtt',
       host: Env.get('MQTT_HOST'),
-      port: Env.get('MQTT_PASSWORD'),
+      port: Env.get('MQTT_PORT'),
       username: Env.get('MQTT_USERNAME', ''),
       password: Env.get('MQTT_PASSWORD', ''),
     },
