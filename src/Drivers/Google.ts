@@ -3,6 +3,7 @@
 import { GooglePubSubConfig, GooglePubSubDriverContract } from '@ioc:Romch007/PubSub'
 import * as google from '@google-cloud/pubsub'
 import { EmitterContract } from '@ioc:Adonis/Core/Event'
+import { Exception } from '@poppinss/utils'
 
 export class GooglePubSubDriver implements GooglePubSubDriverContract {
   public name: 'google' = 'google'
@@ -17,33 +18,36 @@ export class GooglePubSubDriver implements GooglePubSubDriverContract {
   }
 
   public async publish(topic: string, message: Buffer): Promise<void> {
-    this.mapTopic(topic)
-    const googleTopic = this.topicMappings.get(topic)!
+    const googleTopic = this.mapTopic(topic)
     await googleTopic.publishMessage({ data: Buffer.from(message) })
   }
 
   public subscribe(topic: string): void {
-    this.mapSubscription(topic)
-    const googleSubscription = this.subscriptionMappings.get(topic)!
+    const googleSubscription = this.mapSubscription(topic)
+
     googleSubscription.on('message', (message) => {
       this.emitter.emit('pubsub:message', { topic, message: message.data })
     })
   }
 
-  private mapTopic(topic: string) {
+  private mapTopic(topic: string): google.Topic {
     if (!this.topicMappings.has(topic)) {
       const googleTopic = this.client.topic(topic)
       this.topicMappings.set(topic, googleTopic)
     }
+    return this.topicMappings.get(topic)!
   }
 
-  private mapSubscription(topic: string) {
+  private mapSubscription(topic: string): google.Subscription {
     if (!this.subscriptionMappings.has(topic)) {
-      this.mapTopic(topic)
-      const googleTopic = this.topicMappings.get(topic)!
+      const googleTopic = this.mapTopic(topic)
       const googleSubscription = googleTopic.subscription(this.config.subscriptionFormat(topic))
       this.subscriptionMappings.set(topic, googleSubscription)
+      googleSubscription.on('error', (err: Error) => {
+        throw new Exception(err.message, 500, 'E_GOOGLE_PUBSUB_EXCEPTION')
+      })
     }
+    return this.subscriptionMappings.get(topic)!
   }
 
   public close(): void | Promise<void> {
