@@ -130,14 +130,14 @@ declare module '@ioc:Romch007/PubSub' {
   */
 
   /**
-   * Google PubSub driver config
+   * Redis driver config
    */
   export type RedisConfig = {
     redisConnection: string
   }
 
   /**
-   * Shape of the Google PubSub driver
+   * Shape of the Redis driver
    */
   export interface RedisDriverContract extends PubSubDriverContract {
     name: 'redis'
