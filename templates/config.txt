@@ -11,6 +11,7 @@ export default pubsubConfig({
       port: Env.get('MQTT_PORT'),
       username: Env.get('MQTT_USERNAME', ''),
       password: Env.get('MQTT_PASSWORD', ''),
+      ssl: false
     },
     {{/mqtt}}
     {{#google}}

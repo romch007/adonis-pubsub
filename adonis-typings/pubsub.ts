@@ -93,6 +93,7 @@ declare module '@ioc:Romch007/PubSub' {
     port: number
     username?: string
     password?: string
+    ssl: boolean
   }
 
   /**
