@@ -12,6 +12,7 @@ export class MqttDriver implements MqttDriverContract {
     this.client = MQTT.connect({
       ...config,
       protocol: config.ssl ? 'mqtts' : 'mqtt',
+      protocolVersion: config.protocolVersion,
     })
     this.client.on('message', (topic, message, _) => {
       emitter.emit('pubsub:message', { topic, message })

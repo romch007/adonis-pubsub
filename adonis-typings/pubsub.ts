@@ -94,6 +94,7 @@ declare module '@ioc:Romch007/PubSub' {
     username?: string
     password?: string
     ssl: boolean
+    protocolVersion?: number
   }
 
   /**
